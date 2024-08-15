@@ -1,4 +1,5 @@
 .pytest/
+.venv/
 venv/
 .idea/
 .pytest_cache/
