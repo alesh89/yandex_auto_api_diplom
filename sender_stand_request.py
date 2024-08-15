@@ -13,25 +13,24 @@ import requests
 # Импорт данных запроса из модуля data, в котором определены заголовки и тело запроса
 import data
 
-def post_new_user(body):
-    # Выполнение POST-запроса с использованием URL из конфигурационного файла, тела запроса и заголовков
-    # URL_SERVICE и CREATE_USER_PATH объединяются для формирования полного URL для запроса
-    # json=body используется для отправки данных пользователя в формате JSON
-    # headers=data.headers устанавливает заголовки запроса из модуля data
-    response_user=requests.post(configuration.URL_SERVICE + configuration.CREATE_USER_PATH,
-                         json=body,
-                         headers=data.headers)
-    current_token = response_user.json()['authToken']
-    auth_token= "Bearer " + current_token
-    return auth_token
 
-def post_new_client_kit(body,auth_token):  
-    current_header = data.headers.copy()
-    current_header["Authorization"] = auth_token
+def post_new_order(body):
     # Выполнение POST-запроса с использованием URL из конфигурационного файла, тела запроса и заголовков
     # URL_SERVICE и CREATE_USER_PATH объединяются для формирования полного URL для запроса
     # json=body используется для отправки данных пользователя в формате JSON
     # headers=data.headers устанавливает заголовки запроса из модуля data
-    return requests.post(configuration.URL_SERVICE + configuration.CREATE_KITS_PATH,
-                         json=body,
-                         headers=current_header)
+    response_order=requests.post(configuration.URL_SERVICE + configuration.CREATE_ORDERS,
+                         json=body)
+    track_number = response_order.json()['track']
+    return track_number
+
+def get_order():
+    # Выполнение POST-запроса с использованием URL из конфигурационного файла, тела запроса и заголовков
+    # URL_SERVICE и CREATE_USER_PATH объединяются для формирования полного URL для запроса
+    # json=body используется для отправки данных пользователя в формате JSON
+    # headers=data.headers устанавливает заголовки запроса из модуля data
+    track_number = post_new_order(data.order_body)
+    return requests.get(configuration.URL_SERVICE + configuration.TRACK_STATUS , params={"t":track_number})
+
+response = get_order()
+print(response.status_code)
