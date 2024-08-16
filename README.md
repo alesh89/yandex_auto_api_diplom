@@ -61,6 +61,6 @@ def test_create_order_corect_data():
 ```
 
 ##### Результат выполнения теста
-![Диплом  Результат теста](https://github.com/user-attachments/assets/e7640348-55da-4eac-a396-49eba3d7c9fb)
+![Диплом  Результат теста](https://github.com/user-attachments/assets/731d0e5b-3fd2-44db-89b0-e8ec8e2d36ba)
 
 
