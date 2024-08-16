@@ -1,6 +1,4 @@
 # Алёшинский Виктор, 20-я когорта — Финальный проект. Инженер по тестированию плюс
-import configuration
-import requests
 import sender_request
 import data
 
