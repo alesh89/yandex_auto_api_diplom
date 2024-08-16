@@ -1,6 +1,5 @@
 import configuration
 import requests
-import data
 
 def post_new_order(body):
     response_order=requests.post(configuration.URL_SERVICE + configuration.CREATE_ORDERS,
