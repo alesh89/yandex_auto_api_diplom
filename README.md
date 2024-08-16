@@ -47,23 +47,16 @@ def post_new_order(body):
 ```
 ##### Функция для запроса информации о созданном заказе
 ```sh
-def get_order():
-    track_number = post_new_order(data.order_body)
+def get_order(track_number):    
     return requests.get(configuration.URL_SERVICE + configuration.TRACK_STATUS , params={"t":track_number})
 ```
-##### Функция для проверки создания заказа
-```sh
-def check_status(body):
-    response_get_order = get_order()
-    # Проверяется, что код ответа равен 200
-    assert response_get_order.status_code == 200
-```
-
-
 ##### Автотест проверки создания заказа
 ```sh
-def test_create_order_corect_data():
-    check_status(data.order_body)
+def test_create_order_corect_data():    
+    track_number = sender_request.post_new_order(data.order_body)
+    response_get_order = sender_request.get_order(track_number)
+    # Проверяется, что код ответа равен 200
+    assert response_get_order.status_code == 200
 ```
 
 ##### Результат выполнения теста
