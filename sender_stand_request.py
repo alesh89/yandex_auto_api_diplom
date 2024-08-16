@@ -25,12 +25,5 @@ def post_new_order(body):
     return track_number
 
 def get_order():
-    # Выполнение POST-запроса с использованием URL из конфигурационного файла, тела запроса и заголовков
-    # URL_SERVICE и CREATE_USER_PATH объединяются для формирования полного URL для запроса
-    # json=body используется для отправки данных пользователя в формате JSON
-    # headers=data.headers устанавливает заголовки запроса из модуля data
     track_number = post_new_order(data.order_body)
     return requests.get(configuration.URL_SERVICE + configuration.TRACK_STATUS , params={"t":track_number})
-
-response = get_order()
-print(response.status_code)
