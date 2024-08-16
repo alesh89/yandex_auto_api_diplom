@@ -35,6 +35,7 @@ FROM "Orders";
 - data.py: файл с данными;
 - create_order_test.py: файл с написанными тестами;
 - README.md;
+- sender_request.py: файл с запросами
 - .gitignore.
 
 ##### Функция для создания заказа
