@@ -65,5 +65,7 @@ def check_status(body):
 def test_create_order_corect_data():
     check_status(data.order_body)
 ```
+
+##### Результат выполнения теста
 ![Диплом  Результат теста](https://github.com/user-attachments/assets/bd789559-0335-4a73-9fdb-35cb24419fd1)
 
