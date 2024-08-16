@@ -59,8 +59,11 @@ def check_status(body):
     assert response_get_order.status_code == 200
 ```
 
+
 ##### Автотест проверки создания заказа
 ```sh
 def test_create_order_corect_data():
     check_status(data.order_body)
 ```
+![Диплом  Результат теста](https://github.com/user-attachments/assets/bd789559-0335-4a73-9fdb-35cb24419fd1)
+
