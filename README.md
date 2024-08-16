@@ -1,53 +1,66 @@
-# Тесты на проверку параметра name при создании набора продуктов в Яндекс.Прилавок с помощью API Яндекс.Прилавок.
+# Финальный проект. Практический блок: часть вторая
+
+### Задание 1.
+Выведи список логинов курьеров с количеством их заказов в статусе «В доставке» (поле inDelivery = true). 
+```
+SELECT c.login,COUNT(o.id) AS delivery 
+FROM "Couriers" as c 
+INNER JOIN "Orders" AS o ON c.id = o."courierId"
+WHERE o."inDelivery"='t' 
+GROUP BY c.login;
+```
+
+### Задание 2.
+Выведи все трекеры заказов и их статусы. 
+```
+SELECT track,
+        CASE 
+            WHEN finished = 't' THEN '2' 
+            WHEN cancelled = 't' THEN '-1' 
+            WHEN "inDelivery" = 't' THEN '1' 
+            ELSE '0' 
+        END
+FROM "Orders"; 
+```
+
+### Задание 3. Автоматизация теста к API
+
+##### Тесты на проверку создания заказа в  API Яндекс.Самокат.
 - Для запуска тестов должны быть установлены пакеты pytest и requests
 - Запуск всех тестов выполянется командой pytest
 
-## Описание проекта
+##### Описание проекта
 Проект содержит следующие файлы:
 - configuration.py: URL и пути запросов;
-- sender_stand_request.py: файл отправки запросов;
 - data.py: файл с данными;
-- create_kit_name_kit_test.py: файл с написанными тестами;
+- create_order_test.py: файл с написанными тестами;
 - README.md;
 - .gitignore.
 
-## Функция для замены содержимого тела запроса
+##### Функция для создания заказа
 ```sh
-def get_kit_body(name):
-    current_body = data.kit_body.copy()
-    current_body["name"] = name
-    return current_body
+def post_new_order(body):
+    response_order=requests.post(configuration.URL_SERVICE + configuration.CREATE_ORDERS,
+                         json=body)
+    track_number = response_order.json()['track']
+    return track_number
 ```
-## Функция для позитивной проверки
+##### Функция для запроса информации о созданном заказе
 ```sh
-def positive_assert(name):
-    # В переменную kit_body сохраняется обновлённое тело запроса
-    kit_body = get_kit_body(name)
-    kit_response = sender_stand_request.post_new_client_kit(kit_body)
-
-    # Проверяется, что код ответа равен 201
-    assert kit_response.status_code == 201
-    # Проверяется, что возвращаемое имя равно имени, передаваемое в запросе
-    assert kit_response.json()["name"] == name
+def get_order():
+    track_number = post_new_order(data.order_body)
+    return requests.get(configuration.URL_SERVICE + configuration.TRACK_STATUS , params={"t":track_number})
 ```
-## Функция для негативной проверки
+##### Функция для проверки создания заказа
 ```sh
-def negative_assert_symbol(name):
-    # В переменную kit_body сохраняется обновлённое тело запроса
-    kit_body = get_kit_body(name)
-    # В переменную kit_response сохраняется результат запроса на создание набора:
-    kit_response = sender_stand_request.post_new_client_kit(kit_body)
-    # Проверяется, что код ответа равен 400
-    assert kit_response.status_code == 400
+def check_status(body):
+    response_get_order = get_order()
+    # Проверяется, что код ответа равен 200
+    assert response_get_order.status_code == 200
 ```
 
-## Функция для негативной проверки (отсутствует имя)
+##### Автотест проверки создания заказа
 ```sh
-def negative_assert_no_name(kit_body):
-    # В переменную response сохраняется результат запроса на создание набора:
-    response = sender_stand_request.post_new_client_kit(kit_body)
-    # Проверяется, что код ответа равен 400
-    assert response.status_code == 400
+def test_create_order_corect_data():
+    check_status(data.order_body)
 ```
-После описания данных функций расписаны тесты, позволяющие выполнить проверки по каждому пункту чек-листа. Каждый новый тест начинается с префикса test_ и в нем применяется та или иная функция, в зависимости от позитивности проверки.<br>
-Все проверки можно увидеть в файле **[create_kit_name_kit_test.py](https://github.com/alesh89/yandex_api_stand_project10/blob/master/create_kit_name_kit_test.py)**.
